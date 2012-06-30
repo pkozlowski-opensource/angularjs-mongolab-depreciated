@@ -1,0 +1,32 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://raw.github.com/pivotal/jasmine/master/lib/jasmine-core/jasmine.css"/>
+
+    <script type="text/javascript" src="https://raw.github.com/pivotal/jasmine/master/lib/jasmine-core/jasmine.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/pivotal/jasmine/master/lib/jasmine-core/jasmine-html.js"></script>
+
+    <script type="text/javascript" src="http://code.angularjs.org/1.0.1/angular-1.0.1.js"></script>
+    <script type="text/javascript" src="http://code.angularjs.org/1.0.1/angular-resource-1.0.1.js"></script>
+    <script type="text/javascript" src="http://code.angularjs.org/1.0.1/angular-mocks-1.0.1.js"></script>
+
+    <script type="text/javascript" src="mongolab.js"></script>
+    <script type="text/javascript" src="mongolab.test.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+
+    var jasmineEnv = jasmine.getEnv();
+    var trivialReporter = new jasmine.TrivialReporter();
+
+    jasmineEnv.addReporter(trivialReporter);
+
+    jasmineEnv.specFilter = function (spec) {
+        return trivialReporter.specFilter(spec);
+    };
+
+    jasmineEnv.execute();
+
+</script>
+</body>
+</html>
