@@ -19,11 +19,7 @@ describe("mongolab resource scenario", function () {
 
     it("should issue GET request for a query", inject(function (Project) {
 
-        $httpBackend.expect('GET', createUrl('')).respond(
-            [
-                {'_id':{'$oid':1}, 'key':'value'}
-            ]
-        );
+        $httpBackend.expect('GET', createUrl('')).respond([{'_id':{'$oid':1}, 'key':'value'}]);
 
         var result = Project.query();
         $httpBackend.flush();
@@ -35,12 +31,9 @@ describe("mongolab resource scenario", function () {
 
     it("should support 'update' on a resource", inject(function (Project) {
 
-        $httpBackend.expect('PUT', createUrl('/1'), {'key':'Updated value'}).respond(
-            {'_id':{'$oid':1}, 'key':'Updated value'}
-        );
+        $httpBackend.expect('PUT', createUrl('/1'), {'key':'Updated value'}).respond({'_id':{'$oid':1}, 'key':'Updated value'});
 
-        var project = new Project({'_id':{'$oid':1}, 'key':'value'});
-        project.key = 'Updated value';
+        var project = new Project({'_id':{'$oid':1}, 'key':'Updated value'});
         project.update();
 
         $httpBackend.flush();
@@ -48,15 +41,34 @@ describe("mongolab resource scenario", function () {
 
     it("should support 'remove' on a resource", inject(function (Project) {
 
-        $httpBackend.expect('DELETE', createUrl('/1')).respond(
-            {'_id':{'$oid':1}, 'key':'value'}
-        );
+        $httpBackend.expect('DELETE', createUrl('/1')).respond({'_id':{'$oid':1}, 'key':'value'});
 
         var project = new Project({'_id':{'$oid':1}, 'key':'value'});
         project.remove();
 
         $httpBackend.flush();
     }));
+
+    it("should save a new resource when issuing 'saveOrUpdate'", inject(function (Project) {
+
+        $httpBackend.expect('POST', createUrl('')).respond({'_id':{'$oid':1}, 'key':'value'});
+
+        var project = new Project({'key':'value'});
+        project.saveOrUpdate();
+
+        $httpBackend.flush();
+    }));
+
+    it("should update an existing resource when issuing 'saveOrUpdate'", inject(function (Project) {
+
+        $httpBackend.expect('PUT', createUrl('/1')).respond({'_id':{'$oid':1}, 'key':'value'});
+
+        var project = new Project({'_id':{'$oid':1}, 'key':'value'});
+        project.saveOrUpdate();
+
+        $httpBackend.flush();
+    }));
+
 
     afterEach(function () {
         $httpBackend.verifyNoOutstandingExpectation();

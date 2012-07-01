@@ -10,6 +10,14 @@ angular.module('mongolabResource', ['ngResource']).factory('$mongolabResource', 
             return resource.update({id:this._id.$oid}, angular.extend({}, this, {_id:undefined}), cb);
         };
 
+        resource.prototype.saveOrUpdate = function (savecb, updatecb) {
+            if (this._id && this._id.$oid) {
+                return this.update(updatecb);
+            }   else {
+                return this.$save(savecb);
+            }
+        };
+
         resource.prototype.remove = function (cb) {
             return resource.remove({id:this._id.$oid}, cb);
         };
