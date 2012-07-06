@@ -29,6 +29,17 @@ describe("mongolab resource scenario", function () {
         expect(result[0]._id.$oid).toEqual(1);
     }));
 
+    it("should issue GET request for the getById", inject(function (Project) {
+
+        $httpBackend.expect('GET', createUrl('/1')).respond({'_id':{'$oid':1}, 'key':'value'});
+
+        var result = Project.getById(1);
+        $httpBackend.flush();
+
+        expect(result.key).toEqual('value');
+        expect(result._id.$oid).toEqual(1);
+    }));
+
     it("should support 'update' on a resource", inject(function (Project) {
 
         $httpBackend.expect('PUT', createUrl('/1'), {'key':'Updated value'}).respond({'_id':{'$oid':1}, 'key':'Updated value'});
@@ -45,6 +56,16 @@ describe("mongolab resource scenario", function () {
 
         var project = new Project({'_id':{'$oid':1}, 'key':'value'});
         project.remove();
+
+        $httpBackend.flush();
+    }));
+
+    it("should support 'delete' on a resource", inject(function (Project) {
+
+        $httpBackend.expect('DELETE', createUrl('/1')).respond({'_id':{'$oid':1}, 'key':'value'});
+
+        var project = new Project({'_id':{'$oid':1}, 'key':'value'});
+        project.delete();
 
         $httpBackend.flush();
     }));
